@@ -52,7 +52,7 @@ namespace CarDealerShopAPI
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            app.UseCors("CorsPolicy");
+            app.UseCors("AllowLocalhost3000");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
