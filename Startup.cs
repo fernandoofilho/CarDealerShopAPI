@@ -18,7 +18,7 @@ namespace CarDealerShopAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = "mongodb+srv://fernandoofilho:faaf_123@cardealershop.bctcbh0.mongodb.net/";//Configuration.GetConnectionString("MongoDB");
+            string connectionString = "mongodb+srv://{user}:{key}@cardealershop.bctcbh0.mongodb.net/";//Configuration.GetConnectionString("MongoDB");
             string databaseName = "CarDealerShop";//Configuration.GetValue<string>("MongoDB:DatabaseName");
 
             MongoClientSettings settings = MongoClientSettings.FromConnectionString(connectionString);
@@ -26,15 +26,15 @@ namespace CarDealerShopAPI
 
             MongoDatabaseBase mongoDatabase = (MongoDatabaseBase)mongoClient.GetDatabase(databaseName);
             services.AddCors(options =>
-                        {
-                            options.AddPolicy("AllowLocalhost3000",
-                                builder =>
-                                {
-                                    builder.WithOrigins("http://localhost:3000")
-                                        .AllowAnyMethod()
-                                        .AllowAnyHeader();
-                                });
-                        });
+            {
+                options.AddPolicy("AllowAnyOrigin",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
             services.AddSingleton<MongoDatabaseBase>(mongoDatabase);
             services.AddControllers().AddNewtonsoftJson();
         }
@@ -52,7 +52,7 @@ namespace CarDealerShopAPI
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            app.UseCors("AllowLocalhost3000");
+            app.UseCors("AllowAnyOrigin");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
