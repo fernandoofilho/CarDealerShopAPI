@@ -25,7 +25,16 @@ namespace CarDealerShopAPI
             MongoClient mongoClient = new MongoClient(settings);
 
             MongoDatabaseBase mongoDatabase = (MongoDatabaseBase)mongoClient.GetDatabase(databaseName);
-
+            services.AddCors(options =>
+                        {
+                            options.AddPolicy("AllowLocalhost3000",
+                                builder =>
+                                {
+                                    builder.WithOrigins("http://localhost:3000")
+                                        .AllowAnyMethod()
+                                        .AllowAnyHeader();
+                                });
+                        });
             services.AddSingleton<MongoDatabaseBase>(mongoDatabase);
             services.AddControllers().AddNewtonsoftJson();
         }
